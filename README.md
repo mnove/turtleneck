@@ -78,6 +78,10 @@ ln -sfn "$(pwd)/turtleneck/skills/turtleneck" ~/.claude/skills/turtleneck
 More options (copy, project-scoped) in
 [platforms/claude-code/](platforms/claude-code/).
 
+**On Codex** instead of Claude Code? turtleneck runs natively there too — see
+[platforms/codex/](platforms/codex/) for the install (skills go under
+`~/.agents/skills/`).
+
 ## Quick start (Claude Code)
 
 1. **Install the skill** (see above), then restart Claude Code.
@@ -141,12 +145,15 @@ skills/turtleneck/               # the skill — agent-agnostic source of truth
     pass.md                      #   review + apply, behind approval
   schema.md                      #   the artifact format (used by init)
 platforms/
-  claude-code/                   # install notes for Claude Code (the supported platform today)
+  claude-code/                   # install notes for Claude Code
+  codex/                         # native Codex wrapper (SKILL.md) + shared modes/schema symlinks
 examples/
   acme-saas/                     # a worked example: inputs → .design/knowledge.md → a diff to review
 AGENTS.md                        # short, conditional routing + guardrail note
 notes/idea.md                    # the original project brief
 ```
 
-`platforms/` is structured so additional agents (Cursor, Codex, Gemini, …) can be
-added later without touching the skill. Only Claude Code is populated today.
+`platforms/` keeps one shared body (`skills/turtleneck/modes/` + `schema.md`) with
+a thin per-agent wrapper. Claude Code and Codex are populated today; other agents
+(Cursor, Gemini, …) can be added the same way — a new wrapper, no change to the
+shared modes.
