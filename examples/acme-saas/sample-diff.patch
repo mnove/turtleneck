@@ -1,0 +1,75 @@
+# Sample diff for validating `/turtleneck review` against examples/acme-saas/.design/knowledge.md
+#
+# This adds a new InviteTeammate panel. It contains planted divergences so you can
+# check the critic catches the real ones, grades them correctly, and stays quiet
+# on the parts that are fine. Expected verdict is at the bottom of this file.
+
+diff --git a/src/components/InviteTeammate.tsx b/src/components/InviteTeammate.tsx
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/src/components/InviteTeammate.tsx
+@@ -0,0 +1,44 @@
++import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
++import { Field } from "@/components/ui/field";
++import { Input } from "@/components/ui/input";
++import { Button } from "@/components/ui/button";
++
++export function InviteTeammate() {
++  return (
++    <Card>
++      <CardHeader>
++        <CardTitle>Invite a teammate</CardTitle>
++      </CardHeader>
++      <CardContent>
++        {/* GOOD: Field-wrapped input, on-scale gap — should NOT be flagged */}
++        <div className="flex flex-col gap-4">
++          <Field label="Email address">
++            <Input type="email" placeholder="teammate@acme.com" />
++          </Field>
++
++          {/* GOOD: a nested plain section, not a nested Card — should NOT be flagged */}
++          <section className="flex flex-col gap-2">
++            <p className="text-sm text-muted">They'll get an email invite.</p>
++          </section>
++
++          {/* NIT: off-scale spacing — 20px is not in the space-* set (4/8/12/16/24/32) */}
++          <div style={{ marginTop: "20px" }} className="flex gap-2">
++            {/* BLOCKER: hand-rolled action button instead of <Button> */}
++            <button className="bg-indigo-600 text-white rounded px-4 py-2">
++              Send invite
++            </button>
++
++            {/* BLOCKER: second competing primary action in one view
++                (principle: one primary action per view). Cancel should be ghost/secondary. */}
++            <Button variant="primary">Cancel</Button>
++          </div>
++
++          {/* BLOCKER: raw <a> styled as a link instead of <TextLink> for navigation */}
++          <a href="/team" className="text-indigo-600 underline">
++            Back to team
++          </a>
++
++          {/* NIT: disallowed font weight — only 400 / 600 are allowed */}
++          <p style={{ fontWeight: 700 }} className="text-sm">
++            Pending invites: 3
++          </p>
++        </div>
++      </CardContent>
++    </Card>
++  );
++}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# EXPECTED `/turtleneck review` verdict (for validating the skill):
+#
+# BLOCKER  hand-rolled <button> for "Send invite"   → use <Button variant="primary">
+# BLOCKER  two competing primaries (Send + Cancel)  → Cancel should be secondary/ghost
+# BLOCKER  raw <a> for navigation                   → use <TextLink>
+# NIT      marginTop: 20px off the spacing scale     → use space-6 (24px) / space-4 (16px)
+# NIT      fontWeight: 700 not allowed (400/600 only)→ use 600
+#
+# SUMMARY: 3 blockers, 2 nits.
+#
+# Must NOT flag: the Field-wrapped Input, the on-scale gap-4 / gap-2, or the
+# nested plain <section> (it's not a nested Card). Flagging those = false positives.

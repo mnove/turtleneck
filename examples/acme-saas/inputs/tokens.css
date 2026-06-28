@@ -1,0 +1,37 @@
+/* Acme SaaS — design tokens (theme source) */
+
+:root {
+  /* Color */
+  --color-bg:           #ffffff;
+  --color-surface:      #f7f7f8;
+  --color-border:       #e4e4e7;
+  --color-text:         #18181b;
+  --color-text-muted:   #71717a;
+  --color-primary:      #4f46e5; /* indigo-600 — primary actions */
+  --color-primary-fg:   #ffffff;
+  --color-destructive:  #dc2626; /* red-600 — destructive actions only */
+  --color-success:      #16a34a;
+
+  /* Spacing scale — the ONLY allowed spacing values */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Type scale */
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-lg:   18px;
+  --text-xl:   24px;
+
+  /* Allowed font weights: 400 (normal) and 600 (semibold) ONLY */
+  --font-normal:   400;
+  --font-semibold: 600;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
