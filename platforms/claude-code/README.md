@@ -7,12 +7,23 @@ other agents later.
 
 ## Install
 
-Pick one:
+**Easiest — ask your agent.** Tell Claude Code:
 
-**A. Symlink (recommended — get updates by pulling this repo)**
+> Clone https://github.com/mnove/turtleneck and install the turtleneck skill
+> into my Claude Code skills directory.
+
+It will clone the repo and symlink `skills/turtleneck` into `~/.claude/skills/`
+(approve the clone/symlink when prompted).
+
+Or do it manually — pick one:
+
+**A. Clone + symlink (recommended — get updates by pulling this repo)**
 ```sh
-ln -sfn "$(pwd)/skills/turtleneck" ~/.claude/skills/turtleneck
+git clone https://github.com/mnove/turtleneck.git
+ln -sfn "$(pwd)/turtleneck/skills/turtleneck" ~/.claude/skills/turtleneck
 ```
+(If you're already inside a clone, just the `ln -sfn "$(pwd)/skills/turtleneck"
+~/.claude/skills/turtleneck` line.)
 
 **B. Copy**
 ```sh

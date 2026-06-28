@@ -45,10 +45,29 @@ will only enter it on an explicit, unambiguous `pass`. Empty/unknown/ambiguous
 input shows the menu — it never lands in `pass` by accident, and even then no
 file is touched before you approve the proposed diff.
 
+## Install
+
+**Easiest — ask your coding agent:**
+
+> Clone https://github.com/mnove/turtleneck and install the turtleneck skill
+> into my Claude Code skills directory.
+
+Your agent will clone the repo and symlink `skills/turtleneck` into
+`~/.claude/skills/`. Approve the clone/symlink when prompted, then restart Claude
+Code. Type `/turtleneck` to confirm it's there.
+
+**Manual (deterministic):**
+```sh
+git clone https://github.com/mnove/turtleneck.git
+ln -sfn "$(pwd)/turtleneck/skills/turtleneck" ~/.claude/skills/turtleneck
+```
+
+More options (copy, project-scoped) in
+[platforms/claude-code/](platforms/claude-code/).
+
 ## Quick start (Claude Code)
 
-1. **Install the skill.** Copy or symlink `skills/turtleneck` into your skills
-   directory. See [platforms/claude-code/](platforms/claude-code/).
+1. **Install the skill** (see above), then restart Claude Code.
 2. **Generate your design knowledge** — point it at your design system:
    ```
    /turtleneck init
