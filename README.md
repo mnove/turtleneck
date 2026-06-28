@@ -1,4 +1,17 @@
-# turtleneck
+
+<p align="center">
+  <img src="assets/turtleneck.png" alt="turtleneck" width="220" />
+</p>
+
+<h1 align="center">turtleneck</h1>
+
+<p align="center">
+ He reviews the design. Points at what's wrong, and tells you the fix. Disappointment included.
+</p>
+---
+
+> This is a **work-in-progress**. The design-critic skill is functional, but the
+> project is still in early development. 
 
 A reusable **design-critic capability for coding agents.** Point it at any UI
 work — a diff, a component, a screen, a PR — and it reviews that work against
