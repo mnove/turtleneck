@@ -1,0 +1,33 @@
+{
+  "$comment": "Per-platform build config. The build script (scripts/build.js) reads this plus src/body/ and writes each platform's self-contained skill folder. To add a platform, add a block here — no other file changes.",
+
+  "shared": {
+    "name": "turtleneck",
+    "description": "Grounded, advisory design-critic for coding agents. One command, three modes: init (distill a project's design system into a committed knowledge artifact), review (report where UI work diverges from it — read-only), and pass (apply improvements, behind a human-approved diff). Use when the user says \"turtleneck\", \"design review\", \"review this UI against our design system\", \"design pass\", \"set up design knowledge\", or invokes /turtleneck. Augmentation, not enforcement — it never blocks builds or gates CI.",
+    "argHint": "[init | review | pass]"
+  },
+
+  "platforms": [
+    {
+      "id": "claude-code",
+      "out": "skills/turtleneck",
+      "arg": "$mode",
+      "frontmatter": {
+        "user_invocable": true,
+        "arguments": "mode",
+        "argument-hint": "[init | review | pass]  (no arg = show the menu)",
+        "allowed-tools": ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
+      }
+    },
+    {
+      "id": "codex",
+      "out": "platforms/codex/turtleneck",
+      "arg": "$1",
+      "frontmatter": {
+        "license": "MIT",
+        "allowed-tools": "Read Write Edit Bash(git:*) Grep",
+        "metadata": { "argument-hint": "[init | review | pass]" }
+      }
+    }
+  ]
+}

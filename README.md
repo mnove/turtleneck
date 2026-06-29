@@ -136,24 +136,45 @@ to run. That's acceptable for advice, and not a substitute for enforcement.
 ## Repo layout
 
 ```
-skills/turtleneck/               # the skill — agent-agnostic source of truth
-  SKILL.md                       #   thin router: argument-hint + dispatch + mutate-safety rule
-  modes/
-    _shared.md                   #   grounding + conservatism + artifact loading (review & pass)
-    init.md                      #   distill the design system → the artifact
-    review.md                    #   report grounded findings (read-only)
-    pass.md                      #   review + apply, behind approval
-  schema.md                      #   the artifact format (used by init)
-platforms/
-  claude-code/                   # install notes for Claude Code
-  codex/                         # native Codex wrapper (SKILL.md) + shared modes/schema symlinks
+src/                             # SOURCE OF TRUTH — the only place you edit
+  body/
+    router.md                    #   the router body (shared; {{ARG}} → $mode / $1 per platform)
+    modes/
+      _shared.md                 #   grounding + conservatism + artifact loading (review & pass)
+      init.md                    #   distill the design system → the artifact
+      review.md                  #   report grounded findings (read-only)
+      pass.md                    #   review + apply, behind approval
+    schema.md                    #   the artifact format (used by init)
+  platforms.json                 #   per-platform config (frontmatter, arg token, output path)
+scripts/build.js                 # generates the platform folders from src/
+
+# GENERATED (committed, never hand-edited — run `npm run build`):
+skills/turtleneck/               # Claude Code build (SKILL.md + modes/ + schema.md)
+platforms/codex/turtleneck/      # Codex build (SKILL.md + modes/ + schema.md)
+
+platforms/claude-code/           # Claude Code install notes
+platforms/codex/                 # Codex install notes (+ the generated turtleneck/ above)
 examples/
   acme-saas/                     # a worked example: inputs → .design/knowledge.md → a diff to review
 AGENTS.md                        # short, conditional routing + guardrail note
-notes/idea.md                    # the original project brief
 ```
 
-`platforms/` keeps one shared body (`skills/turtleneck/modes/` + `schema.md`) with
-a thin per-agent wrapper. Claude Code and Codex are populated today; other agents
-(Cursor, Gemini, …) can be added the same way — a new wrapper, no change to the
-shared modes.
+One shared body in `src/` + a thin per-platform wrapper, compiled into
+self-contained skill folders. Claude Code and Codex are built today; other agents
+(Cursor, Gemini, …) can be added by appending a block to `src/platforms.json` —
+no change to the shared body.
+
+## Build
+
+The platform skill folders are **generated** from `src/`, so you edit one source
+and every platform stays in sync.
+
+```sh
+npm run build      # regenerate skills/turtleneck/ and platforms/codex/turtleneck/
+npm run check      # CI-friendly: fail if generated output is stale
+```
+
+Generated output **is committed** — users get real files and never run the build.
+Edit `src/body/` (router, modes, schema) or `src/platforms.json` (frontmatter,
+arg token, output path), then `npm run build`. Adding a platform = one block in
+`src/platforms.json`. The build has no dependencies (Node built-ins only).

@@ -2,14 +2,18 @@
 
 turtleneck runs natively on Codex as a skill. Codex skills use the same shape as
 Claude Code's — a folder with a `SKILL.md` (`name` / `description` frontmatter,
-`$1`/`$ARGUMENTS` placeholders, slash invocation). The skill body, modes, and
-schema are **shared with the Claude Code build** — `modes/` and `schema.md` here
-are symlinks into `skills/turtleneck/`, so there's a single source of truth.
+`$1`/`$ARGUMENTS` placeholders, slash invocation). This folder
+(`platforms/codex/turtleneck/`) is **generated** from the shared source in `src/`
+by `npm run build`, so it's a complete, self-contained set of real files — nothing
+to resolve, nothing to symlink.
 
-Only the `SKILL.md` wrapper differs from Claude Code:
+Only the `SKILL.md` wrapper differs from the Claude Code build:
 - frontmatter is the [agentskills.io](https://agentskills.io/specification) shape
   (`allowed-tools` as a space-separated string; `argument-hint` under `metadata`);
 - the router reads the mode from `$1` instead of a named `arguments` field.
+
+The `modes/` and `schema.md` here are byte-identical to the Claude build — both
+come from `src/body/`. **Don't edit these files;** edit `src/` and rebuild.
 
 ## Install
 
@@ -19,18 +23,16 @@ Only the `SKILL.md` wrapper differs from Claude Code:
 > into my Codex skills directory.
 
 **Manual.** Codex discovers skills under `~/.agents/skills/` (user scope) or
-`<repo>/.agents/skills/` (repo scope). Copy the self-contained skill folder there
-— use `cp -rL` so the shared symlinks are resolved into real files:
+`<repo>/.agents/skills/` (repo scope). Copy the skill folder there:
 
 ```sh
 git clone https://github.com/mnove/turtleneck.git
 mkdir -p ~/.agents/skills
-cp -rL turtleneck/platforms/codex/turtleneck ~/.agents/skills/turtleneck
+cp -r turtleneck/platforms/codex/turtleneck ~/.agents/skills/turtleneck
 ```
 
-> Use `cp -rL` (capital L), not a plain symlink — it follows the internal
-> `modes/` and `schema.md` symlinks so the installed folder is self-contained.
-> A repo-scoped install works the same into `<your-repo>/.agents/skills/`.
+> The folder is already self-contained (real files), so a plain `cp -r` is all
+> you need. A repo-scoped install works the same into `<your-repo>/.agents/skills/`.
 
 Then start Codex. Type `/` to see `turtleneck` in the slash menu.
 
@@ -61,14 +63,14 @@ Same three modes as everywhere:
   yours: committed, diffable, owned by you.
 - Drop blessed reference screenshots into the target repo's `.design/examples/`;
   `init` references them and the critic uses them as the bar.
-- **Re-sync after editing the skill:** the installed folder is a resolved copy
-  (`cp -rL`), not a live link — re-run the copy to pick up changes:
-  `rm -rf ~/.agents/skills/turtleneck && cp -rL platforms/codex/turtleneck ~/.agents/skills/turtleneck`.
+- **Re-sync after pulling updates:** the installed folder is a copy, not a live
+  link — re-copy to pick up changes:
+  `rm -rf ~/.agents/skills/turtleneck && cp -r platforms/codex/turtleneck ~/.agents/skills/turtleneck`.
 - **Uninstall:** `rm -rf ~/.agents/skills/turtleneck`.
 
-## Keeping it in sync
+## For maintainers
 
-`modes/` and `schema.md` are symlinks into `skills/turtleneck/`, so any edit to
-the shared body is reflected here automatically — there's nothing to regenerate.
-Only `SKILL.md` is Codex-specific. (If a third platform is added later, that's the
-point to introduce a small build step to generate each wrapper from one source.)
+This folder is **generated** — see [the build](../../README.md#build). Edit the
+shared source in `src/body/` (router + modes + schema) or the per-platform config
+in `src/platforms.json`, then run `npm run build` to regenerate every platform.
+Never hand-edit files here; the build's `--check` mode will flag drift in CI.
