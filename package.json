@@ -1,0 +1,11 @@
+{
+  "name": "turtleneck",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A grounded, advisory design-critic skill for coding agents.",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "check": "node scripts/build.js --check"
+  }
+}
