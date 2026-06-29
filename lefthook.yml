@@ -1,0 +1,21 @@
+# Lefthook config — guarantees the generated platform folders stay in sync with src/.
+#
+# The skill folders under skills/ and platforms/*/turtleneck/ are GENERATED from
+# src/ by `npm run build`. This hook refuses a commit whose committed output is
+# stale (src/ edited but not rebuilt, or an output file hand-edited).
+#
+# It only CHECKS — it never rebuilds or restages for you. If it fails, run
+# `npm run build` and stage the result. Same check should run in CI.
+
+pre-commit:
+  commands:
+    build-in-sync:
+      # Run on every commit, not just ones with "matching staged files" — the
+      # check compares committed output against src/ regardless of what's staged.
+      skip: false
+      run: npm run check
+      # `npm run check` exits non-zero (and prints which files are stale) when the
+      # committed output doesn't match what the build would produce.
+      fail_text: |
+        Generated skill output is out of date.
+        Run `npm run build`, then `git add` the regenerated folders and commit again.
