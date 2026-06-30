@@ -5,10 +5,11 @@
 
 <h1 align="center">turtleneck</h1>
 
-<p align="center">
- He reviews the design. Points at what's wrong, and tells you the fix. <br>Disappointment included.
+<p align="center" >
+ He reviews the design. Points at what's wrong. Tells you the fix. <br>Disappointment included.
 </p>
----
+
+<hr/>
 
 > This is a **work-in-progress**. The design-critic skill is functional, but the
 > project is still in early development. 
