@@ -6,7 +6,7 @@
 <h1 align="center">turtleneck</h1>
 
 <p align="center">
- He reviews the design. Points at what's wrong, and tells you the fix. Disappointment included.
+ He reviews the design. Points at what's wrong, and tells you the fix. <br>Disappointment included.
 </p>
 ---
 
