@@ -18,21 +18,49 @@ A reusable **design-critic capability for coding agents.** Point it at any UI
 work — a diff, a component, a screen, a PR — and it reviews that work against
 *your project's* design knowledge, and, on request, applies improvements.
 
-It's an **augmentation, not an enforcement system.** It advises and improves; it
-does not block builds or gate CI. Design judgment — hierarchy, spacing, component
-choice, brand fit — is fuzzy, semantic work where an LLM is differentiated and a
-deterministic linter can't help. turtleneck builds on that strength.
+Think of it as a senior designer who has seen your `<div>` soup and is choosing,
+for now, to remain professional. He won't block your PR. He'll just look at it,
+sigh, and tell you which component you were supposed to use.
+
+
+## FAQ
+
+**What is it?** A slash-command skill that reviews your UI against *your*
+project's design system and, on request, fixes it to match.
+
+**What problem does it solve?** Generic AI design feedback ("improve contrast,
+add whitespace") is useless — the design-blog horoscope everyone ignores.
+turtleneck grounds every note in your actual components, tokens, and principles,
+so the advice is specific to your project (and harder to dismiss).
+
+**How do I use it?** Run `/turtleneck init` once to distill your design system
+into `.design/knowledge.md`, then `/turtleneck review` on any diff, component, or
+screen. `/turtleneck pass` applies the fixes.
+
+**Will it change my code?** Only `pass`, and only after you approve the diff.
+`review` just judges from a distance, hands folded.
+
+**Does it block my build or CI?** No. He's disappointed, not a tyrant. It's
+advisory — it never gates anything.
+
+**Which agents?** Claude Code and Codex today. It's just Markdown skills, so
+adding others should be relatively easy.
 
 ## The idea in one picture
 
 The single most important decision: **per-project knowledge is generated; the
 critic is fixed and universal.**
 
-```
-/turtleneck init  →  .design/knowledge.md   (per project, committed to your repo)
-                            ↑ consumed by ↓
-        /turtleneck review   (reports grounded findings — read-only)
-        /turtleneck pass     (applies improvements — behind an approved diff)
+```mermaid
+flowchart TD
+    init["/turtleneck init"] -->|generates| kb[".design/knowledge.md<br/>(committed to your repo)"]
+    kb -->|grounds| review["/turtleneck review<br/>reports findings · read-only"]
+    kb -->|grounds| pass["/turtleneck pass<br/>applies fixes · behind approval"]
+
+    classDef artifact fill;
+    classDef mutate fill;
+    class kb artifact;
+    class pass mutate;
 ```
 
 `init` distills *your* design system into one Markdown artifact. `review` and
@@ -106,64 +134,9 @@ More options (copy, project-scoped) in
 specific to your project.
 
 **Isn't:** a linter, a CI gate, an import-restriction enforcer, or an npm
-package. No deterministic enforcement layer. No build is blocked. Nothing is
-published to a registry.
+package. No deterministic enforcement layer. No build is blocked. He critiques;
+he does not call security.
 
-### Non-goals (this version)
-- No deterministic linting / ESLint config / import restrictions.
-- No CI gating or build-blocking.
-- No npm package or registry publishing.
-- No automatic, unapproved UI mutation.
-- It does **not** guarantee adherence — it augments. Reliable run-to-run
-  enforcement would need a deterministic layer this version deliberately omits.
-
-## Why it works (and its limits)
-
-Two things are existential and are baked into the skill (shared by `review` and
-`pass` via `modes/_shared.md`):
-
-- **Grounding** — findings tie back to *your* artifact, by name. The whole value
-  is being sharper than the base model's generic design sense. A critic fed thin
-  knowledge produces ignorable design-blog advice — so `init` works hard to be
-  specific, and the critic refuses to raise anything it can't ground.
-- **Conservatism** — a false `BLOCKER` erodes trust faster than a missed `NIT`.
-  A nitpicky or hallucinating critic gets muted within a day. The critic biases
-  toward fewer, sharper findings, and says so plainly when work is consistent.
-
-Honest limits: the generated knowledge is a strong draft, not ground truth
-(review the inferred tags). It's probabilistic — it misses things and varies run
-to run. That's acceptable for advice, and not a substitute for enforcement.
-
-## Repo layout
-
-```
-src/                             # SOURCE OF TRUTH — the only place you edit
-  body/
-    router.md                    #   the router body (shared; {{ARG}} → $mode / $1 per platform)
-    modes/
-      _shared.md                 #   grounding + conservatism + artifact loading (review & pass)
-      init.md                    #   distill the design system → the artifact
-      review.md                  #   report grounded findings (read-only)
-      pass.md                    #   review + apply, behind approval
-    schema.md                    #   the artifact format (used by init)
-  platforms.json                 #   per-platform config (frontmatter, arg token, output path)
-scripts/build.js                 # generates the platform folders from src/
-
-# GENERATED (committed, never hand-edited — run `npm run build`):
-skills/turtleneck/               # Claude Code build (SKILL.md + modes/ + schema.md)
-platforms/codex/turtleneck/      # Codex build (SKILL.md + modes/ + schema.md)
-
-platforms/claude-code/           # Claude Code install notes
-platforms/codex/                 # Codex install notes (+ the generated turtleneck/ above)
-examples/
-  acme-saas/                     # a worked example: inputs → .design/knowledge.md → a diff to review
-AGENTS.md                        # short, conditional routing + guardrail note
-```
-
-One shared body in `src/` + a thin per-platform wrapper, compiled into
-self-contained skill folders. Claude Code and Codex are built today; other agents
-(Cursor, Gemini, …) can be added by appending a block to `src/platforms.json` —
-no change to the shared body.
 
 ## Build
 
@@ -175,7 +148,10 @@ npm run build      # regenerate skills/turtleneck/ and platforms/codex/turtlenec
 npm run check      # CI-friendly: fail if generated output is stale
 ```
 
-Generated output **is committed** — users get real files and never run the build.
 Edit `src/body/` (router, modes, schema) or `src/platforms.json` (frontmatter,
 arg token, output path), then `npm run build`. Adding a platform = one block in
-`src/platforms.json`. The build has no dependencies (Node built-ins only).
+`src/platforms.json`.
+
+## License
+MIT. See [LICENSE](LICENSE).
+
