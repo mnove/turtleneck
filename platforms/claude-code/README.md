@@ -55,6 +55,25 @@ Typing `/turtleneck ` shows the `[init | update | review | explain | pass]` argu
    behind approval). With no target specified, the critic defaults to the working
    diff (`git diff` / `git diff --staged`).
 
+## Updating
+
+There's no auto-update — refresh the folder when a new version lands.
+
+- **Symlinked (install A):** pull + rebuild; the symlink already points at the
+  rebuilt folder.
+  ```sh
+  cd turtleneck && git pull && npm run build
+  ```
+  Then restart Claude Code.
+- **Copied (install B):** pull + rebuild, then re-copy over the old install.
+  ```sh
+  cd turtleneck && git pull && npm run build
+  rm -rf ~/.claude/skills/turtleneck
+  cp -r skills/turtleneck ~/.claude/skills/turtleneck
+  ```
+- **No clone?** Ask your agent: *"Update turtleneck — pull the latest and reinstall
+  the skill."*
+
 ## Notes
 
 - The knowledge artifact lives in the **target project's** repo at

@@ -115,6 +115,14 @@ More options (copy, project-scoped) in
 [platforms/codex/](platforms/codex/) for the install (skills go under
 `~/.agents/skills/`).
 
+## Updating
+
+**Easiest — ask your agent:**
+
+> Update turtleneck — pull the latest from https://github.com/mnove/turtleneck
+> and reinstall the skill.
+
+
 ## Quick start (Claude Code)
 
 1. **Install the skill** (see above), then restart Claude Code.

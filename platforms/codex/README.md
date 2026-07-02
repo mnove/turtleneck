@@ -58,6 +58,21 @@ Same three modes as everywhere:
    behind approval). With no target specified, the critic defaults to the working
    diff (`git diff` / `git diff --staged`).
 
+## Updating
+
+There's no auto-update, and the Codex install is a **copy** (not a live link), so
+you re-copy to pick up a new version:
+
+```sh
+cd turtleneck && git pull && npm run build
+rm -rf ~/.agents/skills/turtleneck
+cp -r platforms/codex/turtleneck ~/.agents/skills/turtleneck
+```
+Then restart Codex.
+
+**No clone?** Ask your agent: *"Update turtleneck — pull the latest from
+https://github.com/mnove/turtleneck and reinstall the Codex skill."*
+
 ## Notes
 
 - The knowledge artifact lives in the **target project's** repo at
@@ -65,9 +80,6 @@ Same three modes as everywhere:
   yours: committed, diffable, owned by you.
 - Drop blessed reference screenshots into the target repo's `.design/examples/`;
   `init` references them and the critic uses them as the bar.
-- **Re-sync after pulling updates:** the installed folder is a copy, not a live
-  link — re-copy to pick up changes:
-  `rm -rf ~/.agents/skills/turtleneck && cp -r platforms/codex/turtleneck ~/.agents/skills/turtleneck`.
 - **Uninstall:** `rm -rf ~/.agents/skills/turtleneck`.
 
 ## For maintainers
