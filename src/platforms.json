@@ -3,8 +3,8 @@
 
   "shared": {
     "name": "turtleneck",
-    "description": "Grounded, advisory design-critic for coding agents. One command, three modes: init (distill a project's design system into a committed knowledge artifact), review (report where UI work diverges from it — read-only), and pass (apply improvements, behind a human-approved diff). Use when the user says \"turtleneck\", \"design review\", \"review this UI against our design system\", \"design pass\", \"set up design knowledge\", or invokes /turtleneck. Augmentation, not enforcement — it never blocks builds or gates CI.",
-    "argHint": "[init | review | pass]"
+    "description": "Grounded, advisory design-critic for coding agents. One command, five modes: init (distill a project's design system into a committed knowledge artifact), update (refresh that artifact after the design system changes, merged and behind approval), review (report where UI work diverges from it — read-only), explain (trace why a finding/component/token/principle is what it is — read-only), and pass (apply UI improvements, behind a human-approved diff). Use when the user says \"turtleneck\", \"design review\", \"review this UI against our design system\", \"design pass\", \"explain this design finding\", \"set up design knowledge\", or invokes /turtleneck. Augmentation, not enforcement — it never blocks builds or gates CI.",
+    "argHint": "[init | update | review | explain | pass]"
   },
 
   "platforms": [
@@ -15,7 +15,7 @@
       "frontmatter": {
         "user_invocable": true,
         "arguments": "mode",
-        "argument-hint": "[init | review | pass]  (no arg = show the menu)",
+        "argument-hint": "[init | update | review | explain | pass]  (no arg = show the menu)",
         "allowed-tools": ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "AskUserQuestion"]
       }
     },
@@ -26,7 +26,7 @@
       "frontmatter": {
         "license": "MIT",
         "allowed-tools": "Read Write Edit Bash(git:*) Grep",
-        "metadata": { "argument-hint": "[init | review | pass]" }
+        "metadata": { "argument-hint": "[init | update | review | explain | pass]" }
       }
     }
   ]

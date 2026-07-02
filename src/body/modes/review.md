@@ -19,6 +19,16 @@ the grounding + conservatism rules, the severity levels, and the finding /
 2. Apply the grounding rule: only flag what ties to a specific artifact line. If
    the work is consistent, say so plainly.
 3. Output findings in the `_shared.md` format, ending with the `SUMMARY:` line.
+4. **If there was at least one finding**, add exactly one line after `SUMMARY:`,
+   pointing to `explain` for the reasoning:
+
+   ```
+   Run `/turtleneck explain <finding>` for the reasoning behind any of these.
+   ```
+
+   One line, once — not per finding. Skip it entirely on a clean report (0
+   blockers, 0 nits); there's nothing to explain. Keep it to this single pointer:
+   the value of `review` is terse, grounded findings, not upsell.
 
 ## Example output
 
@@ -35,6 +45,7 @@ NIT  src/components/SignupForm.tsx:58
   Fix: use space-4 (16px) or space-6 (24px).
 
 SUMMARY: 1 blocker, 1 nit.
+Run `/turtleneck explain <finding>` for the reasoning behind any of these.
 ```
 
 ## Boundaries
