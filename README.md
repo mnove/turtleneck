@@ -35,7 +35,9 @@ so the advice is specific to your project (and harder to dismiss).
 
 **How do I use it?** Run `/turtleneck init` once to distill your design system
 into `.design/knowledge.md`, then `/turtleneck review` on any diff, component, or
-screen. `/turtleneck pass` applies the fixes.
+screen. `/turtleneck pass` applies the fixes, `/turtleneck explain` tells you
+*why* a note stands, and `/turtleneck update` refreshes the artifact when your
+design system changes.
 
 **Will it change my code?** Only `pass`, and only after you approve the diff.
 `review` just judges from a distance, hands folded.
@@ -68,24 +70,26 @@ flowchart TD
 Only the artifact is per-project — and it lives in **your** repo, diffable and
 inspectable, not in a black box.
 
-## One command, three modes
+## One command, five modes
 
-turtleneck is a single slash command with three modes (like `/turtleneck init`).
-`review` and `pass` share grounding/conservatism rules via a shared context file;
-the modes themselves are kept distinct so the read-only / mutate boundary is
+turtleneck is a single slash command with five modes (like `/turtleneck init`).
+The read-only modes and the mutating ones share grounding/conservatism rules via a
+shared context file, but stay distinct so the read-only / mutate boundary is
 explicit.
 
 | Mode | Role | Mutates? |
 |------|------|----------|
 | `/turtleneck init` | Distill your design system → `.design/knowledge.md`. Run once per project. | Writes the artifact only |
+| `/turtleneck update` | Refresh the artifact after your design system changed — merged, preserving confirmed entries. | Artifact only — after approval |
 | `/turtleneck review` | Report where UI work diverges from the artifact, with grounded findings. | No — read-only |
-| `/turtleneck pass` | Review **plus** apply improvements, behind a human-approved diff. | Yes — after approval |
+| `/turtleneck explain` | Explain *why* a finding, component, token, or principle is what it is — traced to the artifact. | No — read-only |
+| `/turtleneck pass` | Review **plus** apply UI improvements, behind a human-approved diff. | Yes — after approval |
 | `/turtleneck` | Show the discovery menu. | No |
 
-**Mutate safety:** `pass` is the only mode that changes files, and the router
-will only enter it on an explicit, unambiguous `pass`. Empty/unknown/ambiguous
-input shows the menu — it never lands in `pass` by accident, and even then no
-file is touched before you approve the proposed diff.
+**Mutate safety:** only `pass` (UI code) and `update` (the artifact) change files,
+and the router will only enter them on an explicit, unambiguous `pass` / `update`.
+Empty/unknown/ambiguous input shows the menu — it never lands in a mutating mode
+by accident, and even then no file is touched before you approve the proposed diff.
 
 ## Install
 

@@ -21,7 +21,9 @@ the extraction failed — go back to the inputs and dig.
    reviewer should flag when someone hand-rolls or mis-picks. Always fill it.
 3. **Tag every inferred claim** with `⚠️ INFERRED — confirm`. Anything you
    derived rather than read directly from an input gets the tag, so a human can
-   ratify it in one pass.
+   ratify it in one pass. (`update` may also add `⚠️ STALE — confirm removal` on
+   an entry whose source has disappeared — flagged for a human to remove, never
+   silently deleted.)
 4. **Cite the source** of each section in the artifact header (which input file /
    screenshot / doc it came from), so reviewers can trace a finding back.
 5. **Omit empty sections honestly.** If the user fed no brand doc, write

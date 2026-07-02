@@ -43,8 +43,10 @@ Same three modes as everywhere:
 | Command | Mode |
 |---------|------|
 | `/turtleneck init` | Distill your design system → `.design/knowledge.md` |
+| `/turtleneck update` | Refresh the artifact after changes (merged, behind approval) |
 | `/turtleneck review` | Report grounded findings (read-only) |
-| `/turtleneck pass` | Review + apply, behind an approved diff |
+| `/turtleneck explain` | Explain why a finding/component/token/principle stands (read-only) |
+| `/turtleneck pass` | Review + apply UI fixes, behind an approved diff |
 | `/turtleneck` | Discovery menu |
 
 ### Steps
