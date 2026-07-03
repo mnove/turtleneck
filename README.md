@@ -123,6 +123,35 @@ More options (copy, project-scoped) in
 > and reinstall the skill.
 
 
+## Make your agent reach for turtleneck (optional)
+
+Installing the skill lets you *invoke* it (`/turtleneck review`). If you also want
+your agent to **reach for it on its own** when you ask for design work — without
+you remembering the command — add a short note to your project's `CLAUDE.md` or
+`AGENTS.md`. Those files load every session, so the agent keeps turtleneck in mind.
+
+This is optional and you own the file. The block is deliberately **conditional** —
+it nudges the agent only when you actually ask for a design review, never to
+critique unprompted (turtleneck is advisory, not a background nag).
+
+**Ask your agent:**
+
+> Add an optional turtleneck section to my CLAUDE.md — a conditional note to use
+> the /turtleneck skill when I ask to review or improve UI.
+
+**Or paste this in yourself** (under a `## turtleneck` heading):
+
+```markdown
+## turtleneck (design critic)
+When I ask to review or improve UI ("review this design", "does this match our
+design system", "design pass"), use the `/turtleneck` skill:
+- Ground every finding in `.design/knowledge.md`. If it's missing, offer to run
+  `/turtleneck init` first — don't critique from generic design sense.
+- Be conservative: a false BLOCKER costs more than a missed NIT.
+- `review` and `explain` are read-only. `pass` (UI) and `update` (the artifact)
+  edit only behind an approved diff. Never critique design unprompted.
+```
+
 ## Quick start (Claude Code)
 
 1. **Install the skill** (see above), then restart Claude Code.
