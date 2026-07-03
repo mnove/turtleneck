@@ -93,27 +93,48 @@ by accident, and even then no file is touched before you approve the proposed di
 
 ## Install
 
-**Easiest — ask your coding agent:**
+**Easiest — paste this prompt into your coding agent.** It clones, installs the
+skill for your agent, and (optionally) wires up a `CLAUDE.md` / `AGENTS.md` note
+so the agent reaches for turtleneck on its own:
 
-> Clone https://github.com/mnove/turtleneck and install the turtleneck skill
-> into my Claude Code skills directory.
+```text
+Install the turtleneck design-critic skill from https://github.com/mnove/turtleneck.
 
-Your agent will clone the repo and symlink `skills/turtleneck` into
-`~/.claude/skills/`. Approve the clone/symlink when prompted, then restart Claude
-Code. Type `/turtleneck` to confirm it's there.
+1. Clone the repo (or git pull if I already have it).
+2. Install the skill for whichever agent I'm using:
+   - Claude Code → symlink `skills/turtleneck` into `~/.claude/skills/turtleneck`
+   - Codex       → copy `platforms/codex/turtleneck` into `~/.agents/skills/turtleneck`
+   Ask me which if it's unclear.
+3. Optional: add a "## turtleneck" section to my project's CLAUDE.md (or AGENTS.md)
+   so you reach for the skill when I ask for design work. Use this conditional note
+   — do NOT critique design unprompted:
 
-**Manual (deterministic):**
-```sh
-git clone https://github.com/mnove/turtleneck.git
-ln -sfn "$(pwd)/turtleneck/skills/turtleneck" ~/.claude/skills/turtleneck
+   > When I ask to review or improve UI, use the /turtleneck skill. Ground every
+   > finding in .design/knowledge.md (offer /turtleneck init if it's missing).
+   > Be conservative. review and explain are read-only; pass and update edit only
+   > behind an approved diff.
+
+   Ask me before writing to that file.
+4. Tell me to restart my agent, then confirm /turtleneck works.
 ```
 
-More options (copy, project-scoped) in
-[platforms/claude-code/](platforms/claude-code/).
+The agent will ask before touching `~/.claude` / `~/.agents` and before editing
+your `CLAUDE.md` — approve when prompted, then restart your agent and type
+`/turtleneck` to confirm.
 
-**On Codex** instead of Claude Code? turtleneck runs natively there too — see
-[platforms/codex/](platforms/codex/) for the install (skills go under
-`~/.agents/skills/`).
+**Prefer to do it by hand?**
+```sh
+git clone https://github.com/mnove/turtleneck.git
+# Claude Code:
+ln -sfn "$(pwd)/turtleneck/skills/turtleneck" ~/.claude/skills/turtleneck
+# Codex:
+cp -r turtleneck/platforms/codex/turtleneck ~/.agents/skills/turtleneck
+```
+
+Per-platform details (copy vs symlink, project-scoped installs) in
+[platforms/claude-code/](platforms/claude-code/) and
+[platforms/codex/](platforms/codex/). The optional `CLAUDE.md` note is described
+under [Make your agent reach for turtleneck](#make-your-agent-reach-for-turtleneck-optional).
 
 ## Updating
 
@@ -125,21 +146,19 @@ More options (copy, project-scoped) in
 
 ## Make your agent reach for turtleneck (optional)
 
-Installing the skill lets you *invoke* it (`/turtleneck review`). If you also want
-your agent to **reach for it on its own** when you ask for design work — without
-you remembering the command — add a short note to your project's `CLAUDE.md` or
-`AGENTS.md`. Those files load every session, so the agent keeps turtleneck in mind.
+The install prompt above can set this up for you (step 3). This section is for
+doing it **later, on its own** — or if you'd rather paste the note in by hand.
 
-This is optional and you own the file. The block is deliberately **conditional** —
-it nudges the agent only when you actually ask for a design review, never to
-critique unprompted (turtleneck is advisory, not a background nag).
+Installing the skill lets you *invoke* it (`/turtleneck review`). Adding a short
+note to your project's `CLAUDE.md` or `AGENTS.md` makes your agent **reach for it
+on its own** when you ask for design work — those files load every session, so the
+agent keeps turtleneck in mind.
 
-**Ask your agent:**
+It's optional and you own the file. The block is deliberately **conditional** — it
+nudges the agent only when you actually ask for a design review, never to critique
+unprompted (turtleneck is advisory, not a background nag).
 
-> Add an optional turtleneck section to my CLAUDE.md — a conditional note to use
-> the /turtleneck skill when I ask to review or improve UI.
-
-**Or paste this in yourself** (under a `## turtleneck` heading):
+Paste this under a `## turtleneck` heading:
 
 ```markdown
 ## turtleneck (design critic)
