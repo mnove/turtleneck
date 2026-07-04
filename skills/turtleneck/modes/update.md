@@ -45,7 +45,8 @@ Compare the current artifact against the current design system, entry by entry:
    approve additions+refreshes but let me review stale flags / let me pick /
    cancel. No file is written until approved.
 5. **Write the approved result** to `.design/knowledge.md`. Update the `Last
-   updated:` line and the `Sources:` list if inputs changed.
+   updated:` line, and keep the `Sources:` header a scannable summary (globs +
+   counts per [../schema.md](../schema.md)) — don't grow it into a long file list.
 6. **Run the thinness test** (from `init`) on any new/refreshed entries — new
    filler is still filler.
 
